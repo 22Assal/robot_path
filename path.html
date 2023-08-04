@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<head lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>path</title>
+<style>
+
+canvas{
+position:fixed;
+top:45%;
+left:30%;
+border: 2px solid #B5C6C6;
+background: #B5C6C6;
+}
+
+body{
+margin: 0;
+background: #F7F5F6;
+}
+
+div{
+position:fixed;
+top:85px;
+left:31%;
+}
+
+.s , .b , .l , .r ,.f{
+color:white;
+border:#E1D5E3 2px solid;
+font-family:Times New Roman, serif, Times;
+font-size:30px;
+background-color: #E1D5E3;
+padding: 10px 20px;
+
+}
+
+.s:hover , .b:hover , .l:hover , .r:hover ,.f:hover{
+background-color:#B5C6C6;
+border:#B5C6C6 2px solid;
+color:white;
+}
+
+.s{
+position:relative;
+top:90px;
+left:28%;
+}
+
+.l{
+position:relative;
+top:90px;
+left:-5%;
+}
+.r{
+position:relative;
+top:90px;
+right:-15%;
+}
+
+.f{
+position:relative;
+top:15px;
+left:-25%;
+}
+
+.b{
+position:relative;
+top:165px;
+left:-51.5%;
+}
+
+
+</style>
+</head>
+
+
+<body>
+     <div action="fm.php" method="POST">
+       <input type="submit" name="data" value="STOP" class="s" onclick="Delete()" >
+       <input type="submit" name="data" value="LEFT" class="l" onclick="Left()">
+       <input type="submit" name="data" value="RIGHT" class="r" onclick="Right()" >
+       <input type="submit" name="data" value="FORWARD" class="f" onclick="Forward()">
+       <input type="submit" name="data" value="BACKWARD" class="b" onclick="Backward()">           
+     </div>
+     
+     
+<canvas id="canvas" width="600" height="400"></canvas>
+
+
+<script>
+
+var can = document.querySelector('#canvas');
+var cont = can.getContext('2d');
+cont.lineWidth = "3";
+cont.strokeStyle= "purple";
+var lastx=300;
+var lasty=200;
+//console variables...text...
+var x;
+var cright = 0;
+var cleft = 0;	
+var fragain =0;
+var flagain =0;
+var bfright =0;
+var bfleft =0;
+var startBackward =0;
+var startBackwardright =0;
+var startBackwardleft =0;
+
+var dirr;
+
+                              // FOOORWARD..
+function Forward(){
+//drawing the line using buttons...
+cont.moveTo(lastx,lasty);
+lasty=lasty-10;
+cont.lineTo(lastx,lasty);
+cont.stroke();
+
+                    
+
+//console code.......
+if (fragain == 0 && flagain == 0){
+ console.log("f");
+ }else if ( fragain >= 1 ){	
+		console.log("r");		
+}else if ( flagain >= 1 ){	
+		console.log("l");		
+}
+
+
+fragain = 0;
+flagain = 0;
+cright = 0;
+cleft =0;
+startBackward = startBackward +1;
+
+}
+
+
+                              // BAAACKWARD..
+function Backward(){
+//drawing the line using buttons...
+cont.moveTo(lastx,lasty);
+lasty=lasty+10;
+cont.lineTo(lastx,lasty);
+cont.stroke();
+
+
+//console code ....
+if (startBackward == 0 ){
+	console.log("b");
+}else if (fragain == 0 && flagain == 0 ){
+		console.log("f");
+}else if ( fragain >= 1 ){	
+		console.log("l");		
+}else if ( flagain >= 1 ){	
+		console.log("r");		
+}
+fragain = 0;
+flagain = 0;
+cright = 0;
+cleft =0;
+bfright = bfright + 1;
+bfleft = bfleft + 1;
+}
+
+
+                              // RIIIIGHTTT..
+function Right(){
+//drawing the line using buttons...
+cont.moveTo(lastx,lasty);
+lastx=lastx+10;
+cont.lineTo(lastx,lasty);
+cont.stroke();
+
+//console code ......
+cright=cright+1;
+if ( (cright == 1 && bfright == 0) || (startBackward == 0 && startBackwardright == 0)){				
+		console.log("r");		
+	}else if(cright >= 1 && bfright == 0){
+		console.log("f");
+	}else if ( bfright == 0 ){				
+		console.log("f");		
+	}else if ( bfright >= 1){
+		console.log("l");
+	}
+bfright = 0;
+flagain=flagain+1; 
+startBackwardright = startBackwardright +1;
+startBackward = startBackward +1;
+}
+
+
+                              // LEEEEEFTTT..
+function Left(){
+//drawing the line using buttons...
+cont.moveTo(lastx,lasty);
+lastx=lastx-10;
+cont.lineTo(lastx,lasty);
+cont.stroke();
+
+
+// console....
+cleft=cleft+1;  
+if ( cleft == 1 && bfleft == 0 || (startBackward == 0 && startBackwardleft == 0)){
+		console.log("l");		
+	}else if ( cleft >= 1 && bfleft == 0){
+		console.log("f");
+	}else if ( bfleft == 0 ){				
+		console.log("f");		
+	}else if ( bfleft >= 1){
+		console.log("r");
+	}
+fragain=fragain+1;
+bfleft=0;
+startBackwardleft = startBackwardleft +1;
+startBackward = startBackward +1;
+
+}
+
+function Delete(){
+//delete every drawn line...
+cont.clearRect(0,0, can.width , can.height);
+window.location.reload();
+}
+
+</script>
+
+</body>
+</html>
